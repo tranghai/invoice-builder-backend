@@ -4,15 +4,30 @@ const HttpStatus = require('http-status-codes');
 const Invoice = require('../models/invoice.model');
 
 const invoices = [
-    { _id: "10001", item:"Amazon Product 1", qty: 10},
-    { _id: "10002", item:"Amazon Product 2", qty: 20},
-    { _id: "10003", item:"Amazon Product 3", qty: 30},
+    { _id: "10001", item: "Amazon Product 1", qty: 10 },
+    { _id: "10002", item: "Amazon Product 2", qty: 20 },
+    { _id: "10003", item: "Amazon Product 3", qty: 30 },
 ];
 
-module.exports = { 
+module.exports = {
     findAll(req, res, next) {
-        //return res.json(invoices);
-        Invoice.find()
+        const { page = 1, perPage = 10, filter, sortField, sortDir } = req.query;
+        const options = {
+            page: parseInt(page, 10),
+            limit: parseInt(perPage, 10),
+        };
+
+        const query = {};
+        if (filter) {
+            query.item = { $regex: filter };
+        }
+        if (sortField && sortDir) {
+            options.sort = { [sortField]: sortDir };
+        }
+
+        console.log(options);
+
+        Invoice.paginate(query, options)
             .then(invoices => res.json(invoices))
             .catch(err => res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err));
     },
@@ -52,12 +67,12 @@ module.exports = {
             .catch(err => res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err));
     },
 
-    delete(req, res){
+    delete(req, res) {
         const { id } = req.params;
         Invoice.findByIdAndRemove(id)
-            .then(invoice =>{
-                if(!invoice){
-                    return res.status(HttpStatus.NOT_FOUND).json({ err: 'Could not find any invoice'});
+            .then(invoice => {
+                if (!invoice) {
+                    return res.status(HttpStatus.NOT_FOUND).json({ err: 'Could not find any invoice' });
                 }
                 return res.json(invoice);
             })
