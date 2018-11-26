@@ -11,10 +11,10 @@ const invoices = [
 
 module.exports = { 
     findAll(req, res, next) {
-        return res.json(invoices);
-        // Invoice.find()
-        //     .then(invoices => res.json(invoices))
-        //     .catch(err => res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err));
+        //return res.json(invoices);
+        Invoice.find()
+            .then(invoices => res.json(invoices))
+            .catch(err => res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err));
     },
 
     createOne(req, res, next) {
@@ -42,10 +42,22 @@ module.exports = {
 
     findOne(req, res) {
         const { id } = req.params;
-        Invoice.findByIdAndRemove(id)
+        Invoice.findById(id)
             .then(invoice => {
                 if (!invoice) {
-                    return res.status(HttpStatus.NOT_FOUND).json({ err: 'Could not delete any invoice' });
+                    return res.status(HttpStatus.NOT_FOUND).json({ err: 'Could not find any invoice' });
+                }
+                return res.json(invoice);
+            })
+            .catch(err => res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err));
+    },
+
+    delete(req, res){
+        const { id } = req.params;
+        Invoice.findByIdAndRemove(id)
+            .then(invoice =>{
+                if(!invoice){
+                    return res.status(HttpStatus.NOT_FOUND).json({ err: 'Could not find any invoice'});
                 }
                 return res.json(invoice);
             })
