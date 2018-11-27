@@ -214,8 +214,24 @@
         }
       },
       "Invoices": {
-        "type": "array",
-        "$ref": "#definitions/Invoice"
+        "properties": {
+          "docs": {
+            "type": "array",
+            "$ref": "#definitions/Invoice"
+          },
+          "total": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "pages": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          }
+        }
       }
     }
   }

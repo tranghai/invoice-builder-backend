@@ -3,15 +3,9 @@ const Joi = require('joi');
 const HttpStatus = require('http-status-codes');
 const Invoice = require('../models/invoice.model');
 
-const invoices = [
-    { _id: "10001", item: "Amazon Product 1", qty: 10 },
-    { _id: "10002", item: "Amazon Product 2", qty: 20 },
-    { _id: "10003", item: "Amazon Product 3", qty: 30 },
-];
-
 module.exports = {
     findAll(req, res, next) {
-        const { page = 1, perPage = 10, filter, sortField, sortDir } = req.query;
+        const { page = 1, perPage = 5, filter, sortField, sortDir } = req.query;
         const options = {
             page: parseInt(page, 10),
             limit: parseInt(perPage, 10),
@@ -24,8 +18,6 @@ module.exports = {
         if (sortField && sortDir) {
             options.sort = { [sortField]: sortDir };
         }
-
-        console.log(options);
 
         Invoice.paginate(query, options)
             .then(invoices => res.json(invoices))
