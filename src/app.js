@@ -4,6 +4,7 @@ const logger = require('morgan');
 const router = require('./config/routes');
 const config = require('./config/dev');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./config/swagger.json');
@@ -17,6 +18,7 @@ const PORT = 3000;
 
 app.use(bodyParser.json());
 app.use(express.urlencoded());
+app.use(cors());
 app.use(logger('dev'));
 app.use(
     '/api-docs',
