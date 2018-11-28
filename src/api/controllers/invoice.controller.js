@@ -15,10 +15,12 @@ module.exports = {
         if (filter) {
             query.item = { $regex: filter };
         }
+
         if (sortField && sortDir) {
             options.sort = { [sortField]: sortDir };
         }
 
+        console.log(options);
         Invoice.paginate(query, options)
             .then(invoices => res.json(invoices))
             .catch(err => res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err));
