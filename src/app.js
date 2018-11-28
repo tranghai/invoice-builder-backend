@@ -1,13 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const logger = require('morgan');
-const router = require('./config/routes');
 const config = require('./config/dev');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./config/swagger.json');
+const restRouter  = require('./api');
 
 mongoose.connect(config.DB_URI);
 
@@ -28,7 +28,7 @@ app.use(
     })
 );
 
-app.use('/api', router);
+app.use('/api', restRouter );
 app.use((req, res, next) => {
     const error = new Error('Not Found');
     error.status = 400;
