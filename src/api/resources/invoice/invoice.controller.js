@@ -27,7 +27,7 @@ module.exports = {
             .catch(err => res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(err));
     },
 
-    createOne(req, res, next) {
+    create(req, res, next) {
         const schema = Joi.object().keys({
             item: Joi.string().required(),
             date: Joi.date().required(),
