@@ -1,1 +1,2 @@
-module.exports = require('./invoice.router');
+const invoiceRouter = require('./invoice.router');
+module.exports = invoiceRouter;

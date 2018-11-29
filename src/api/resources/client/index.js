@@ -1,1 +1,2 @@
-module.exports = require('./client.router');
+const clientRouter = require('./client.router');
+module.exports = clientRouter;
