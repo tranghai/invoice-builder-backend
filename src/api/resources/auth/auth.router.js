@@ -3,16 +3,15 @@ const passport = require("passport");
 const authController = require("./auth.controller");
 
 const authRouter = express.Router();
-
-// GET /auth/google
+/// GET /auth/google
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request.  The first step in Google authentication will involve
 //   redirecting the user to google.com.  After authorization, Google
 //   will redirect the user back to this application at /auth/google/callback
 authRouter.get(
-  "/google",
-  passport.authenticate("google", {
-    scope: ["profile", "email"]
+  '/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
   })
 );
 
@@ -22,9 +21,9 @@ authRouter.get(
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
 authRouter.get(
-  "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/failure" }),
-  authController.sendJWTToken
+  '/google/callback',
+  passport.authenticate('google', { failureRedirect: '/failure' }),
+   authController.sendJWTToken
 );
 
 // Twitter
@@ -47,3 +46,6 @@ authRouter.get(
 
 authRouter.get('/authenticate', passport.authenticate('jwt', { session: false }), authController.authenticate);
 authRouter.get('/logout', passport.authenticate('jwt', { session: false }), authController.logout);
+
+
+module.exports = authRouter;

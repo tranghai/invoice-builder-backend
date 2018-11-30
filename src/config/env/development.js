@@ -6,8 +6,8 @@ const devConfig = {
   frontendURL: "http://localhost:4200",
   google: {
     clientId:
-      "706785035459-ipo473bq6cb3hi64euurr741ocd42m26.apps.googleusercontent.com",
-    clientSecret: "s_iQ4OMsjPWPlZRHQplZOhCx",
+      "465245842718-3nsmafhgvs8563lkemjg8m8cl1l6adt0.apps.googleusercontent.com",
+    clientSecret: "5AJVQ542hYGJ_xYQPVx2K7dR",
     callbackURL: "http://localhost:3000/api/auth/google/callback"
   },
   twitter: {
