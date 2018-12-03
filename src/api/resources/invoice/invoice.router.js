@@ -13,4 +13,5 @@ router.route('/:id')
         .put(passport.authenticate('jwt', { session: false }), invoiceController.update)
         .delete(passport.authenticate('jwt', { session: false }), invoiceController.delete);
 
+router.get('/:id/download', passport.authenticate('jwt', { session: false }), invoiceController.download);   
 module.exports = router;
