@@ -19,7 +19,13 @@ const devConfig = {
     clientId: "fc9d9767cbccb04facb0",
     clientSecret: "6a583ae69ddcc4729b5f90dbd4c31d63bcce16b2",
     callbackURL: "http://localhost:3000/api/auth/github/callback"
-  }
+  },
+  ethereal: {
+    username: 'zznemrujfyofqhf5@ethereal.email',
+    password: 'V8wMZEmYuQuZMWXKAh',
+    host: 'smtp.ethereal.email',
+    port: 587,
+  },
 };
 
 module.exports = devConfig;

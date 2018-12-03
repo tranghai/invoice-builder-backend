@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const UserSchema = new Schema({
   local: {
+    name: String,
     email: String,
     password: String,
   },
@@ -18,6 +19,7 @@ const UserSchema = new Schema({
     id: String,
     token: String,
     displayName: String,
+    email: String,
   },
   github: {
     email: String,

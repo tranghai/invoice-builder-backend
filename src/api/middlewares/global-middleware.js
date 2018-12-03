@@ -4,10 +4,12 @@ const swaggerUi = require("swagger-ui-express");
 const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
+const pdf = require("express-pdf");
 
 const devConfig = require("../../config/env/development");
 const swaggerDocument = require("../../config/swagger.json");
 const configureJWTStrategy = require("./passport-jwt");
+const User = require("../resources/user/user.model");
 
 const configureGoogleStrategy = require("./passport-google");
 const configureTwitterStrategy = require("./passport-twitter");
@@ -17,6 +19,7 @@ const setGlobalMiddleware = app => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cors());
+  app.use(pdf);
   app.use(logger('dev'));
   app.use(
     session({
