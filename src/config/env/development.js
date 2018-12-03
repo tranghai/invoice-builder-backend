@@ -16,8 +16,8 @@ const devConfig = {
     callbackURL: "http://localhost:3000/api/auth/twitter/callback"
   },
   github: {
-    clientId: "79bdab1805aa121cda61",
-    clientSecret: "514711afa587ebfc68671eecca71f11fb2771a28",
+    clientId: "fc9d9767cbccb04facb0",
+    clientSecret: "6a583ae69ddcc4729b5f90dbd4c31d63bcce16b2",
     callbackURL: "http://localhost:3000/api/auth/github/callback"
   }
 };
