@@ -6,53 +6,52 @@ const User = require('./user.model');
 const devConfig = require('../../../config/env/development')
 
 module.exports = {
-    async signup(req, res){
-        try{
-            const { error, value } = userService.validateSchema(req.body);
-            if(error && error.message){
-                return res.status(BAD_REQUEST).json(error);
-            } 
-
-            const user = await User.create(value);
-            return res.json({ success: true, message : 'User created successfully'});
+    async signup(req, res) {
+        try {
+          const { error, value } = userService.validateSchema(req.body);
+          if (error && error.details) {
+            return res.status(BAD_REQUEST).json(error);
+          }
+          const existingUser = await User.findOne({ 'local.email': value.email });
+          if (existingUser) {
+            return res.status(BAD_REQUEST).json({ err: 'You have already created account' });
+          }
+          const user = await new User();
+          user.local.email = value.email;
+          const salt = await bcryptjs.genSalt();
+          const hash = await bcryptjs.hash(value.password, salt);
+          user.local.password = hash;
+          await user.save();
+          return res.json({ success: true, message: 'User created successfully' });
+        } catch (err) {
+          console.error(err);
+          return res.status(INTERNAL_SERVER_ERROR).json(err);
         }
-        catch(error){
-            console.error(error);
-            return res.status(INTERNAL_SERVER_ERROR).json(error);
+      },
+      async login(req, res) {
+        try {
+          const { error, value } = userService.validateSchema(req.body);
+          if (error && error.details) {
+            return res.status(BAD_REQUEST).json(error);
+          }
+          const user = await User.findOne({ 'local.email': value.email });
+          if (!user) {
+            return res.status(BAD_REQUEST).json({ err: 'invalid email or password' });
+          }
+          const matched = bcryptjs.compare(value.password, user.password);
+          if (!matched) {
+            return res.status(UNAUTHORIZED).json({ err: 'invalid credentials' });
+          }
+          const token = jwt.sign({ id: user._id }, devConfig.secret, {
+            expiresIn: '1d',
+          });
+          return res.json({ success: true, token });
+        } catch (err) {
+          console.error(err);
+          return res.status(INTERNAL_SERVER_ERROR).json(err);
         }
-    },
-
-    async login(req, res){
-        try{
-            const { error, value } = userService.validateSchema(req.body);
-            if(error && error.message){
-                return res.status(BAD_REQUEST).json(error);
-            } 
-
-            const user = await User.findOne({ email : value.email });
-
-            if(!user){
-                return res.status(BAD_REQUEST).json({ error : 'invalid email or password'});
-            }
-
-            const matched = await bcryptjs.compare(value.password, user.password);
-            if(!matched){
-                return res.status(UNAUTHORIZED).json({ err: 'invalid credentials' });
-            }
-
-            const token = jwt.sign({ id : user._id}, devConfig.secret, {
-                expiresIn: '1d'
-            });
-
-            return res.json({ success : true, token });
-        }
-        catch(error){
-            console.error(error);
-            return res.status(INTERNAL_SERVER_ERROR).json(error);
-        }
-    },
-
-    async test(req, res) {
-		return res.json(req.currentUser);
-	}
+      },
+      async test(req, res) {
+        return res.json(req.currentUser);
+      },
 }
