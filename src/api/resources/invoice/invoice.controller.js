@@ -54,6 +54,7 @@ module.exports = {
     findOne(req, res) {
         const { id } = req.params;
         Invoice.findById(id)
+            .populate('client')
             .then(invoice => {
                 if (!invoice) {
                     return res.status(HttpStatus.NOT_FOUND).json({ err: 'Could not find any invoice' });
