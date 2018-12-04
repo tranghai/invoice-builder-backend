@@ -2,7 +2,7 @@ const nodemailer = require("nodemailer");
 const htmlToText = require("html-to-text");
 const devConfig = require("../../config/env/development");
 
-const sendEmail = options => {
+const sendEmail = options =>
   new Promise((resolve, reject) => {
     const transpoter = nodemailer.createTransport({
       host: devConfig.ethereal.host,
@@ -31,6 +31,5 @@ const sendEmail = options => {
       return resolve({ message: "Reset Email has sent to your inbox" });
     });
   });
-};
 
 module.exports = sendEmail;

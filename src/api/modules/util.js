@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcryptjs = require('bcryptjs');
 const devConfig = require('../../config/env/development');
 
+
 const getJWTToken  = payload =>{
     const token = jwt.sign(payload, devConfig.secret, {
         expiresIn: '1d',
@@ -15,5 +16,4 @@ const getEncryptedPassword  = async password => {
     return hash;
   };
 
-  module.exports = getJWTToken;
-  module.exports = getEncryptedPassword;
+  module.exports = { getJWTToken, getEncryptedPassword }
